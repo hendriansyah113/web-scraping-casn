@@ -1,9 +1,8 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import fetch from 'node-fetch';
-import XLSX from 'xlsx';
-import cors from 'cors';
-import fs from 'fs';
+const express = require('express');
+const bodyParser = require('body-parser');
+const XLSX = require('xlsx');
+const cors = require('cors');
+const fs = require('fs');
 
 const app = express();
 app.use(bodyParser.json());
@@ -23,6 +22,9 @@ const headers = {
 async function fetchAllData(params) {
     let allData = [];
     let offset = 0;
+
+    // Dynamically import fetch
+    const { default: fetch } = await import('node-fetch');
 
     do {
         params.offset = offset;
@@ -89,7 +91,18 @@ app.post('/scrap', async (req, res) => {
     }
 });
 
-// Jalankan server
-app.listen(3000, () => {
-    console.log("Server berjalan di http://localhost:3000");
+app.listen(3000, '0.0.0.0', () => {
+    console.log("Server berjalan di http://0.0.0.0:3000");
 });
+
+const path = require('path');
+
+// Menyajikan file statis seperti index.html
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Atau rute khusus untuk index.html
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.php'));
+});
+
+

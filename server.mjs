@@ -102,7 +102,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Atau rute khusus untuk index.html
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.php'));
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 
